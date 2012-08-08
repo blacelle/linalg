@@ -1,0 +1,23 @@
+Polynomial (inspired) from NTL
+a) div, %
+b) inv
+c) to OutputStream
+d) GCD, XGCD
+e) reverse ?
+f) BuildFromRoots, evaluate, interpolate
+g) MulTrunc, SqrTrunc, InvTrunc
+
+
+
+
+Matrix
+
+
+
+
+
+http://code.google.com/p/java-matrix-benchmark/
+http://code.google.com/p/la4j/#Features
+http://ojalgo.org/what.html
+http://en.wikipedia.org/wiki/List_of_numerical_libraries#Java
+http://math.nist.gov/javanumerics/jama/#Authors
