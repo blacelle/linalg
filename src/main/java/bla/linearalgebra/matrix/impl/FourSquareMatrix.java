@@ -1,6 +1,5 @@
 package bla.linearalgebra.matrix.impl;
 
-import bla.linearalgebra.IRing;
 import bla.linearalgebra.matrix.IFourSquaresMatrix;
 import bla.linearalgebra.matrix.IMatrix;
 
@@ -10,8 +9,13 @@ public class FourSquareMatrix<T> extends AMatrix<T> implements IFourSquaresMatri
 	protected final IMatrix<T> southWest;
 	protected final IMatrix<T> southEast;
 
-	public FourSquareMatrix(IRing<T> coeffRing, IMatrix<T> northWest, IMatrix<T> northEast, IMatrix<T> southWest, IMatrix<T> southEast) {
-		super(coeffRing, northWest.nbRows() + southWest.nbRows(), northWest.nbColumns() + northEast.nbColumns());
+	public FourSquareMatrix(IMatrix<T> northWest, IMatrix<T> northEast, IMatrix<T> southWest, IMatrix<T> southEast) {
+		super(northWest.getCoeffRing(), northWest.nbRows() + southWest.nbRows(), northWest.nbColumns() + northEast.nbColumns());
+
+		if (!northWest.getCoeffRing().equals(northEast.getCoeffRing()) || !northWest.getCoeffRing().equals(northEast.getCoeffRing())
+				|| !northWest.getCoeffRing().equals(northEast.getCoeffRing()) || !northWest.getCoeffRing().equals(northEast.getCoeffRing())) {
+			throw new RuntimeException("Incompatible coeff rings");
+		}
 
 		this.northWest = northWest;
 		this.northEast = northEast;
