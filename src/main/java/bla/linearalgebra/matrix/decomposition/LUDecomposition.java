@@ -1,6 +1,5 @@
 package bla.linearalgebra.matrix.decomposition;
 
-import Jama.Matrix;
 import bla.linearalgebra.IRing;
 import bla.linearalgebra.matrix.IMatrix;
 import bla.linearalgebra.matrix.impl.DenseMatrix;
@@ -74,7 +73,7 @@ public class LUDecomposition<T> {
 			piv[i] = i;
 		}
 		pivsign = coeffRing.one();
-		IVerticalVector<T> LUrowi;
+//		IVerticalVector<T> LUrowi;
 		IVerticalVector<T> LUcolj = new VerticalVector<T>(coeffRing, m);
 
 		// Outer loop.
@@ -128,7 +127,7 @@ public class LUDecomposition<T> {
 
 			if (j < m & !LU.getValue(j, j).equals(coeffRing.zero())) {
 				for (int i = j + 1; i < m; i++) {
-					LU[i][j] /= LU[j][j];
+					LU.setValue(i, j, coeffRing.div(LU.getValue(i, j), LU.getValue(j, j)));
 				}
 			}
 		}
@@ -154,22 +153,22 @@ public class LUDecomposition<T> {
 	 * @return L
 	 */
 
-	public Matrix getL() {
-		Matrix X = new Matrix(m, n);
-		double[][] L = X.getArray();
-		for (int i = 0; i < m; i++) {
-			for (int j = 0; j < n; j++) {
-				if (i > j) {
-					L[i][j] = LU[i][j];
-				} else if (i == j) {
-					L[i][j] = 1.0;
-				} else {
-					L[i][j] = 0.0;
-				}
-			}
-		}
-		return X;
-	}
+	// public Matrix getL() {
+	// Matrix X = new Matrix(m, n);
+	// double[][] L = X.getArray();
+	// for (int i = 0; i < m; i++) {
+	// for (int j = 0; j < n; j++) {
+	// if (i > j) {
+	// L[i][j] = LU[i][j];
+	// } else if (i == j) {
+	// L[i][j] = 1.0;
+	// } else {
+	// L[i][j] = 0.0;
+	// }
+	// }
+	// }
+	// return X;
+	// }
 
 	/**
 	 * Return upper triangular factor
@@ -177,20 +176,20 @@ public class LUDecomposition<T> {
 	 * @return U
 	 */
 
-	public Matrix getU() {
-		Matrix X = new Matrix(n, n);
-		double[][] U = X.getArray();
-		for (int i = 0; i < n; i++) {
-			for (int j = 0; j < n; j++) {
-				if (i <= j) {
-					U[i][j] = LU[i][j];
-				} else {
-					U[i][j] = 0.0;
-				}
-			}
-		}
-		return X;
-	}
+	// public Matrix getU() {
+	// Matrix X = new Matrix(n, n);
+	// double[][] U = X.getArray();
+	// for (int i = 0; i < n; i++) {
+	// for (int j = 0; j < n; j++) {
+	// if (i <= j) {
+	// U[i][j] = LU[i][j];
+	// } else {
+	// U[i][j] = 0.0;
+	// }
+	// }
+	// }
+	// return X;
+	// }
 
 	/**
 	 * Return pivot permutation vector
@@ -237,38 +236,38 @@ public class LUDecomposition<T> {
 	 *                Matrix is singular.
 	 */
 
-	public Matrix solve(Matrix B) {
-		if (B.getRowDimension() != m) {
-			throw new IllegalArgumentException("Matrix row dimensions must agree.");
-		}
-		if (!this.isNonsingular()) {
-			throw new RuntimeException("Matrix is singular.");
-		}
-
-		// Copy right hand side with pivoting
-		int nx = B.getColumnDimension();
-		Matrix Xmat = B.getMatrix(piv, 0, nx - 1);
-		double[][] X = Xmat.getArray();
-
-		// Solve L*Y = B(piv,:)
-		for (int k = 0; k < n; k++) {
-			for (int i = k + 1; i < n; i++) {
-				for (int j = 0; j < nx; j++) {
-					X[i][j] -= X[k][j] * LU[i][k];
-				}
-			}
-		}
-		// Solve U*X = Y;
-		for (int k = n - 1; k >= 0; k--) {
-			for (int j = 0; j < nx; j++) {
-				X[k][j] /= LU[k][k];
-			}
-			for (int i = 0; i < k; i++) {
-				for (int j = 0; j < nx; j++) {
-					X[i][j] -= X[k][j] * LU[i][k];
-				}
-			}
-		}
-		return Xmat;
-	}
+	// public Matrix solve(Matrix B) {
+	// if (B.getRowDimension() != m) {
+	// throw new IllegalArgumentException("Matrix row dimensions must agree.");
+	// }
+	// if (!this.isNonsingular()) {
+	// throw new RuntimeException("Matrix is singular.");
+	// }
+	//
+	// // Copy right hand side with pivoting
+	// int nx = B.getColumnDimension();
+	// Matrix Xmat = B.getMatrix(piv, 0, nx - 1);
+	// double[][] X = Xmat.getArray();
+	//
+	// // Solve L*Y = B(piv,:)
+	// for (int k = 0; k < n; k++) {
+	// for (int i = k + 1; i < n; i++) {
+	// for (int j = 0; j < nx; j++) {
+	// X[i][j] -= X[k][j] * LU[i][k];
+	// }
+	// }
+	// }
+	// // Solve U*X = Y;
+	// for (int k = n - 1; k >= 0; k--) {
+	// for (int j = 0; j < nx; j++) {
+	// X[k][j] /= LU[k][k];
+	// }
+	// for (int i = 0; i < k; i++) {
+	// for (int j = 0; j < nx; j++) {
+	// X[i][j] -= X[k][j] * LU[i][k];
+	// }
+	// }
+	// }
+	// return Xmat;
+	// }
 }

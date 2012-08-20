@@ -1,8 +1,8 @@
 package bla.linearalgebra.integer.impl;
 
-import bla.linearalgebra.IOperation;
+import bla.linearalgebra.IInversableOperation;
 
-public class IntegerMultiplicationOperation implements IOperation<Integer> {
+public class IntegerMultiplicationOperation implements IInversableOperation<Integer> {
 
 	@Override
 	public Integer add(Integer left, Integer right) {
@@ -30,5 +30,15 @@ public class IntegerMultiplicationOperation implements IOperation<Integer> {
 	@Override
 	public Integer makeFromint(int i) {
 		return i;
+	}
+
+	@Override
+	public Integer opposite(Integer element) {
+		return -element;
+	}
+
+	@Override
+	public Integer minus(Integer left, Integer right) {
+		return left / right;
 	}
 }

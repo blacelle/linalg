@@ -45,6 +45,15 @@ public class GenericRing<T> implements IRing<T> {
 	}
 
 	@Override
+	public T div(T left, T right) {
+		if (multiplication instanceof IInversableOperation<?>) {
+			return ((IInversableOperation<T>) multiplication).minus(left, right);
+		} else {
+			throw new RuntimeException(multiplication + " can't divide as it is not a " + IInversableOperation.class);
+		}
+	}
+
+	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
@@ -80,13 +89,14 @@ public class GenericRing<T> implements IRing<T> {
 		return addition.makeFromint(i);
 	}
 
-//	@Override
-//	public T mulByFactor(T element, int factor) {
-//		if (element instanceof Integer) {
-//			return ((Integer) element) * factor;
-//		} else {
-//			throw new RuntimeException("Can not mulByFactor a " + element.getClass());
-//		}
-//	}
+	// @Override
+	// public T mulByFactor(T element, int factor) {
+	// if (element instanceof Integer) {
+	// return ((Integer) element) * factor;
+	// } else {
+	// throw new RuntimeException("Can not mulByFactor a " +
+	// element.getClass());
+	// }
+	// }
 
 }
