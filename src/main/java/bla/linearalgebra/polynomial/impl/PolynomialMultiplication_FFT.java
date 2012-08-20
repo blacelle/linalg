@@ -23,10 +23,10 @@ public class PolynomialMultiplication_FFT<T> implements IOperation<IPolynomialFu
 		NaivePolynomialFunction<T> output = new NaivePolynomialFunction<T>(ring);
 		
 
-		a = algo.fft(ring, a, omega);
+//		a = algo.fft(ring, a, omega);
 		// Calcul de la FFT inverse
-		System.out.println(toString(ring, a));
-		a = algo.fft(ring, a, omegainv);
+//		System.out.println(toString(ring, a));
+//		a = algo.fft(ring, a, omegainv);
 
 		int maxPower = left.getMaxPower() + right.getMaxPower();
 
