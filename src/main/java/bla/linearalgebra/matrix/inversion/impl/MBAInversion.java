@@ -4,6 +4,7 @@ import bla.linearalgebra.IRing;
 import bla.linearalgebra.matrix.IMatrix;
 import bla.linearalgebra.matrix.impl.FourSquareMatrix;
 import bla.linearalgebra.matrix.impl.SubMatrix;
+import bla.linearalgebra.matrix.structured.impl.DiagonalMatrix;
 
 public class MBAInversion {
 	public static int getSize(IMatrix<?> iA) {
@@ -21,8 +22,19 @@ public class MBAInversion {
 		return fullSize / 2;
 	}
 
+	public static final <T> IMatrix<T> doInverseSize1Matrix(IMatrix<T> iA) {
+		if (getSize(iA) != 1) {
+			throw new RuntimeException("Expected a matrix of size 1");
+		}
+		return new DiagonalMatrix<T>(iA.getCoeffRing(), 1, 1, iA.getValue(0, 0));
+	}
+
 	public static <T> IMatrix<T> doInverse(IRing<IMatrix<T>> matrixRing, IMatrix<T> iA) {
 		int sizeA = getSize(iA);
+
+		if (sizeA == 1) {
+			return doInverseSize1Matrix(iA);
+		}
 
 		// TODO: garder un seul des 2, A est carree
 		int sizeA11 = getTopLeftSize(sizeA);

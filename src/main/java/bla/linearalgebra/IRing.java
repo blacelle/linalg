@@ -22,8 +22,11 @@ public interface IRing<T> { // extends IRingElement> {
 	T sub(T left, T right);
 
 	T mul(T left, T right);
-//	T mulByFactor(T element, int factor);
-	
+
+	// T mulByFactor(T element, int factor);
+
+
+	T inv(T element);
 
 	T div(T left, T right);
 

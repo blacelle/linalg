@@ -7,20 +7,22 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import bla.linearalgebra.IRing;
+import bla.linearalgebra.IRingWithUnderlyingRing;
 import bla.linearalgebra.integer.impl.IntegerRing;
 import bla.linearalgebra.matrix.impl.MatrixRing;
 import bla.linearalgebra.matrix.structured.impl.VandermondeMatrix;
 
 public class TestIntegerMatrixRing extends ATestMatrixRing<Integer> {
-
-	@Override
-	public IRing<IMatrix<Integer>> makeRing() {
-		return new MatrixRing<Integer>(MatrixUtil.makeZero(makeCoeffRing(), nbRows(), nbColumns()), MatrixUtil.makeOne(makeCoeffRing(), nbRows(), nbColumns()));
+	/**
+	 * Should be used only in makeRing()
+	 */
+	public IRing<Integer> makeCoeffRing() {
+		return new IntegerRing();
 	}
 
 	@Override
-	public IRing<Integer> makeCoeffRing() {
-		return new IntegerRing();
+	public IRingWithUnderlyingRing<Integer, IMatrix<Integer>> makeRing() {
+		return new MatrixRing<Integer>(MatrixUtil.makeZero(makeCoeffRing(), nbRows(), nbColumns()), MatrixUtil.makeOne(makeCoeffRing(), nbRows(), nbColumns()));
 	}
 
 	public int nbRows() {
@@ -34,20 +36,20 @@ public class TestIntegerMatrixRing extends ATestMatrixRing<Integer> {
 	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<IMatrix<Integer>> getIteratable() {
-		IMatrix<Integer> first = new VandermondeMatrix<Integer>(makeCoeffRing(), Arrays.asList(2, 3, 5), nbColumns());
-		IMatrix<Integer> second = new VandermondeMatrix<Integer>(makeCoeffRing(), Arrays.asList(3, 5, 7), nbColumns());
-		IMatrix<Integer> third = new VandermondeMatrix<Integer>(makeCoeffRing(), Arrays.asList(5, 7, 13), nbColumns());
+		IMatrix<Integer> first = new VandermondeMatrix<Integer>(makeRing().getCoeffRing(), Arrays.asList(2, 3, 5), nbColumns());
+		IMatrix<Integer> second = new VandermondeMatrix<Integer>(makeRing().getCoeffRing(), Arrays.asList(3, 5, 7), nbColumns());
+		IMatrix<Integer> third = new VandermondeMatrix<Integer>(makeRing().getCoeffRing(), Arrays.asList(5, 7, 13), nbColumns());
 
 		return Arrays.asList(first, second, third);
 	}
 
 	@Test
 	public void testZeroValue() {
-		Assert.assertEquals(MatrixUtil.makeZero(makeCoeffRing(), nbRows(), nbColumns()), makeRing().zero());
+		Assert.assertEquals(MatrixUtil.makeZero(makeRing().getCoeffRing(), nbRows(), nbColumns()), makeRing().zero());
 	}
 
 	@Test
 	public void testOneValue() {
-		Assert.assertEquals(MatrixUtil.makeOne(makeCoeffRing(), nbRows(), nbColumns()), makeRing().one());
+		Assert.assertEquals(MatrixUtil.makeOne(makeRing().getCoeffRing(), nbRows(), nbColumns()), makeRing().one());
 	}
 }

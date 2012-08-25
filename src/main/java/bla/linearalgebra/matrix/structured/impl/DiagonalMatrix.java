@@ -4,11 +4,17 @@ import bla.linearalgebra.IRing;
 import bla.linearalgebra.matrix.IMatrixVisitor;
 import bla.linearalgebra.matrix.structured.IDiagonalMatrix;
 
-public class DiagonalMatrix<T> extends AToeplitzMatrix<T> implements IDiagonalMatrix<T>{
+public class DiagonalMatrix<T> extends AToeplitzMatrix<T> implements IDiagonalMatrix<T> {
 	protected final T valueOnDiagonal;
 
 	public DiagonalMatrix(IRing<T> coeffRing, int nbRows, int nbColumns, T valueOnDiagonal) {
 		super(coeffRing, nbRows, nbColumns);
+
+		this.valueOnDiagonal = valueOnDiagonal;
+	}
+
+	public DiagonalMatrix(IRing<T> coeffRing, T valueOnDiagonal) {
+		super(coeffRing);
 
 		this.valueOnDiagonal = valueOnDiagonal;
 	}
@@ -33,4 +39,8 @@ public class DiagonalMatrix<T> extends AToeplitzMatrix<T> implements IDiagonalMa
 			iMatrixVisitor.visitCell(i, i);
 	}
 
+	@Override
+	public String toString() {
+		return "IDiagonal(" + nbRows() + "," + nbColumns() + ") with " + valueOnDiagonal + " on diagonal";
+	}
 }

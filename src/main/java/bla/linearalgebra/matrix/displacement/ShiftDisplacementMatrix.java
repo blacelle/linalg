@@ -1,4 +1,4 @@
-package bla.linearalgebra.matrix.displacemenyt;
+package bla.linearalgebra.matrix.displacement;
 
 import bla.linearalgebra.IRing;
 import bla.linearalgebra.matrix.IMatrix;

@@ -10,4 +10,8 @@ public abstract class AToeplitzMatrix<T> extends AMatrix<T> implements IToeplitz
 		super(coeffRing, nbRows, nbColumns);
 	}
 
+	public AToeplitzMatrix(IRing<T> coeffRing) {
+		super(coeffRing, -1, -1);
+	}
+
 }

@@ -5,7 +5,6 @@ import java.util.Iterator;
 import org.junit.Assert;
 import org.junit.Test;
 
-
 public abstract class ATestRing<T> {
 	public abstract IRing<T> makeRing();
 
@@ -55,6 +54,25 @@ public abstract class ATestRing<T> {
 				expected = i;
 			}
 			Assert.assertEquals(expected, ring.add(i, ring.zero()));
+			Assert.assertEquals(expected, ring.add(ring.zero(), i));
+			Assert.assertEquals(expected, ring.sub(i, ring.zero()));
+			Assert.assertEquals(ring.neg(expected), ring.sub(ring.zero(), i));
+		}
+	}
+
+	@Test
+	public void testOneStability() {
+		IRing<T> ring = makeRing();
+
+		for (T i : getIteratable()) {
+			T expected;
+			if (ring instanceof IReducedRing<?>) {
+				expected = ((IReducedRing<T>) ring).reduce(i);
+			} else {
+				expected = i;
+			}
+			Assert.assertEquals(expected, ring.mul(i, ring.one()));
+			Assert.assertEquals(expected, ring.mul(ring.one(), i));
 		}
 	}
 

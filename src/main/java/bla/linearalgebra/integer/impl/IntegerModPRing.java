@@ -45,6 +45,11 @@ public class IntegerModPRing<T> implements IReducedRing<T> {
 	}
 
 	@Override
+	public T inv(T element) {
+		return reduce(underlyingRing.inv(element));
+	}
+
+	@Override
 	public T div(T left, T right) {
 		return reduce(underlyingRing.div(left, right));
 	}

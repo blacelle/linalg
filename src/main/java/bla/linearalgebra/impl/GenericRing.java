@@ -45,11 +45,20 @@ public class GenericRing<T> implements IRing<T> {
 	}
 
 	@Override
+	public T inv(T element) {
+		if (multiplication instanceof IInversableOperation<?>) {
+			return ((IInversableOperation<T>) multiplication).opposite(element);
+		} else {
+			return null;
+		}
+	}
+
+	@Override
 	public T div(T left, T right) {
 		if (multiplication instanceof IInversableOperation<?>) {
 			return ((IInversableOperation<T>) multiplication).minus(left, right);
 		} else {
-			throw new RuntimeException(multiplication + " can't divide as it is not a " + IInversableOperation.class);
+			return null;
 		}
 	}
 

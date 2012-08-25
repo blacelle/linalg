@@ -34,7 +34,11 @@ public class IntegerMultiplicationOperation implements IInversableOperation<Inte
 
 	@Override
 	public Integer opposite(Integer element) {
-		return -element;
+		if (getNeutralElement().equals(element)) {
+			return element;
+		} else {
+			return null;
+		}
 	}
 
 	@Override
