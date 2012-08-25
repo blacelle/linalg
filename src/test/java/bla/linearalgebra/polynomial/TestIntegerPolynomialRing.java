@@ -6,12 +6,12 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import bla.linearalgebra.ATestRing;
 import bla.linearalgebra.IRing;
 import bla.linearalgebra.integer.impl.IntegerPolynomialutil;
 import bla.linearalgebra.integer.impl.IntegerRing;
 import bla.linearalgebra.polynomial.impl.PolynomialRing;
 import bla.linearalgebra.polynomial.monomial.impl.MonomialFunction;
+import bla.linearalgebra.ring.ATestRing;
 
 public class TestIntegerPolynomialRing extends ATestRing<IPolynomialFunction<Integer>> {
 

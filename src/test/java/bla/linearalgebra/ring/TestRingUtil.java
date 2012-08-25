@@ -1,4 +1,4 @@
-package bla.linearalgebra;
+package bla.linearalgebra.ring;
 
 import java.util.Arrays;
 import java.util.List;
@@ -7,6 +7,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import bla.linearalgebra.IRing;
 import bla.linearalgebra.impl.RingUtil;
 import bla.linearalgebra.integer.TestIntegerRing;
 

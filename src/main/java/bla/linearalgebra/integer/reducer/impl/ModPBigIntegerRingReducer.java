@@ -21,7 +21,11 @@ public class ModPBigIntegerRingReducer implements IRingReducer<BigInteger> {
 
 	@Override
 	public BigInteger reduce(BigInteger element) {
-		return element.remainder(modp);
+		if (element == null) {
+			return null;
+		} else {
+			return element.remainder(modp);
+		}
 	}
 
 	@Override

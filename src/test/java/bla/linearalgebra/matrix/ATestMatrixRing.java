@@ -3,9 +3,9 @@ package bla.linearalgebra.matrix;
 import org.junit.Assert;
 import org.junit.Test;
 
-import bla.linearalgebra.ATestRingWithUnderlyingRing;
 import bla.linearalgebra.matrix.structured.IConstantMatrix;
 import bla.linearalgebra.matrix.structured.impl.ConstantMatrix;
+import bla.linearalgebra.ring.ATestRingWithUnderlyingRing;
 
 public abstract class ATestMatrixRing<T> extends ATestRingWithUnderlyingRing<T, IMatrix<T>> {
 	

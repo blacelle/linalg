@@ -1,9 +1,12 @@
-package bla.linearalgebra;
+package bla.linearalgebra.ring;
 
 import java.util.Iterator;
 
 import org.junit.Assert;
 import org.junit.Test;
+
+import bla.linearalgebra.IReducedRing;
+import bla.linearalgebra.IRing;
 
 public abstract class ATestRing<T> {
 	public abstract IRing<T> makeRing();
@@ -37,7 +40,9 @@ public abstract class ATestRing<T> {
 		IRing<T> ring = makeRing();
 
 		for (T i : getIteratable()) {
+			// 0 = a + (-a)
 			Assert.assertEquals(ring.zero(), ring.add(i, ring.neg(i)));
+			// 0 = a - a
 			Assert.assertEquals(ring.zero(), ring.sub(i, i));
 		}
 	}
@@ -53,9 +58,13 @@ public abstract class ATestRing<T> {
 			} else {
 				expected = i;
 			}
+			// a = a + 0
 			Assert.assertEquals(expected, ring.add(i, ring.zero()));
+			// a = 0 + a
 			Assert.assertEquals(expected, ring.add(ring.zero(), i));
+			// a = a - 0
 			Assert.assertEquals(expected, ring.sub(i, ring.zero()));
+			// a = 0 - a
 			Assert.assertEquals(ring.neg(expected), ring.sub(ring.zero(), i));
 		}
 	}
@@ -71,7 +80,9 @@ public abstract class ATestRing<T> {
 			} else {
 				expected = i;
 			}
+			// a = 1 * a
 			Assert.assertEquals(expected, ring.mul(i, ring.one()));
+			// a = a * 1
 			Assert.assertEquals(expected, ring.mul(ring.one(), i));
 		}
 	}

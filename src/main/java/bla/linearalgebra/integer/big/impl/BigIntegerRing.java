@@ -10,5 +10,8 @@ public class BigIntegerRing extends GenericRing<BigInteger> implements IRing<Big
 	public BigIntegerRing() {
 		super(new BigIntegerAdditionOperation(), new BigIntegerMultiplicationOperation());
 	}
+	public BigIntegerRing(long modP) {
+		super(new BigIntegerAdditionOperation(), new BigIntegerModPMultiplicationOperation(modP));
+	}
 
 }

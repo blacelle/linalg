@@ -6,9 +6,9 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import bla.linearalgebra.ATestRing;
 import bla.linearalgebra.IRing;
 import bla.linearalgebra.integer.impl.IntegerRing;
+import bla.linearalgebra.ring.ATestRing;
 
 public class TestIntegerRing extends ATestRing<Integer> {
 
