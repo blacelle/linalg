@@ -1,14 +1,15 @@
 package bla.linearalgebra.polynomial.impl;
 
 import bla.linearalgebra.IInversableOperation;
+import bla.linearalgebra.IRing;
 import bla.linearalgebra.polynomial.IPolynomialFunction;
 import bla.linearalgebra.polynomial.monomial.impl.MonomialFunction;
 
 public class PolynomialAdditionOperation<T> extends AInversableOperation<IPolynomialFunction<T>> implements IInversableOperation<IPolynomialFunction<T>> {
 	protected final IPolynomialFunction<T> neutralElement;
 
-	public PolynomialAdditionOperation(IPolynomialFunction<T> neutralElement) {
-		this.neutralElement = neutralElement;
+	public PolynomialAdditionOperation(IRing<T> coeffRing) {
+		this.neutralElement = new MonomialFunction<T>(coeffRing, coeffRing.zero(), 0);
 	}
 
 	@Override

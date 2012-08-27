@@ -1,5 +1,7 @@
 package bla.linearalgebra.polynomial;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 import bla.linearalgebra.IRing;
@@ -63,6 +65,24 @@ public class PolynomialUtil {
 			}
 
 			return output;
+		}
+	}
+
+	/**
+	 * Return an array where the ith element is the coefficient associated to
+	 * X^i
+	 */
+	public static <T> List<T> toList(IPolynomialFunction<T> input) {
+		if (input == null) {
+			return null;
+		} else {
+			List<T> coeffs = new ArrayList<T>();
+
+			for (int i = 0; i <= input.getMaxPower(); i++) {
+				coeffs.add(input.getCoedd(i));
+			}
+
+			return coeffs;
 		}
 	}
 }

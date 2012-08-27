@@ -98,6 +98,11 @@ public class GenericRing<T> implements IRing<T> {
 		return addition.makeFromint(i);
 	}
 
+	@Override
+	public T findNthPrimitiveRootOfUnity(int n) {
+		return null;
+	}
+
 	// @Override
 	// public T mulByFactor(T element, int factor) {
 	// if (element instanceof Integer) {

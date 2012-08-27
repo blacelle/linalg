@@ -25,12 +25,15 @@ public interface IRing<T> { // extends IRingElement> {
 
 	// T mulByFactor(T element, int factor);
 
-
 	T inv(T element);
 
 	T div(T left, T right);
 
 	T makeFromInt(int i);
+
+	// Returns a value a such that a^n is 1 and 1, a^1, a^2, ..., a^n-1 are not
+	// 1
+	T findNthPrimitiveRootOfUnity(int n);
 
 	// For zz_p
 	// boolean OneIsPrime

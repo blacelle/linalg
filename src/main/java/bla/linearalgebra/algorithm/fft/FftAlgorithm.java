@@ -1,12 +1,14 @@
 package bla.linearalgebra.algorithm.fft;
 
+import java.util.List;
+
 import bla.linearalgebra.IRing;
 
 public interface FftAlgorithm {
 	/**
 	 * Calcul du papillon
 	 */
-	<T> void butterfly(IRing<T> ring, T[] a, int i, int j, T alpha);
+	<T> void butterfly(IRing<T> ring, List<T> a, int i, int j, T alpha);
 
 	/**
 	 * Calcul de la FFT
@@ -16,5 +18,5 @@ public interface FftAlgorithm {
 	 * @param root
 	 *            racine primitive n-ième de l'unité
 	 */
-	<T> T[] fft(IRing<T> ring, T[] a, T root);
+	<T> List<T> fft(IRing<T> ring, List<T> a, T root);
 }

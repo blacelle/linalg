@@ -51,17 +51,21 @@ public class FFT implements FftAlgorithm {
 	 * @param a
 	 *            tableau dont la taille doit être une puissance de 2
 	 */
-	private static void permuteArray(Object[] a) {
-		int h = log2(a.length); // On suppose a.length = 2^h
+	private static <T> List<T> permuteArray(List<T> a) {
+		a = new ArrayList<T>(a);
+
+		int h = log2(a.size()); // On suppose a.length = 2^h
 		int i, j; // Indexes variables
 
-		for (i = 0; i < a.length; i++) {
+		for (i = 0; i < a.size(); i++) {
 			if ((j = mirror(h, i)) < i) {
-				Object tmp = a[i];
-				a[i] = a[j];
-				a[j] = tmp;
+				T tmp = a.get(i);
+				a.set(i, a.get(j));
+				a.set(j, tmp);
 			}
 		}
+
+		return a;
 	}
 
 	/**
@@ -72,8 +76,9 @@ public class FFT implements FftAlgorithm {
 	 * @param root
 	 *            racine primitive n-ième de l'unité
 	 */
-	public <T> T[] fft(IRing<T> ring, T[] a, T root) {
-		int h = log2(a.length);
+	@Override
+	public <T> List<T> fft(IRing<T> ring, List<T> a, T root) {
+		int h = log2(a.size());
 		int i, j, l; // Variable d'indice
 		int step = 1; // Pas
 
@@ -84,13 +89,13 @@ public class FFT implements FftAlgorithm {
 			powerRoot.add(ring.mul(powerRoot.get(l - 1), powerRoot.get(l - 1)));
 
 		// Permutation du tableau
-		permuteArray(a);
+		a = permuteArray(a);
 
 		// Itération
 		for (l = h - 1, step = 1; l >= 0; l--, step *= 2) {
 			T alpha = ring.one(); // Unité
 			for (i = 0; i < step; i++) {
-				for (j = i; j < a.length; j += 2 * step) {
+				for (j = i; j < a.size(); j += 2 * step) {
 					butterfly(ring, a, j, j + step, alpha);
 				}
 				alpha = ring.mul(alpha, powerRoot.get(l));
@@ -100,11 +105,11 @@ public class FFT implements FftAlgorithm {
 	}
 
 	@Override
-	public <T> void butterfly(IRing<T> ring, T[] a, int i, int j, T alpha) {
+	public <T> void butterfly(IRing<T> ring, List<T> a, int i, int j, T alpha) {
 
-		T u = a[i];
-		T v = ring.mul(alpha, a[j]);
-		a[i] = ring.add(u, v);
-		a[j] = ring.sub(u, v);
+		T u = a.get(i);
+		T v = ring.mul(alpha, a.get(j));
+		a.set(i, ring.add(u, v));
+		a.set(j, ring.sub(u, v));
 	}
 }

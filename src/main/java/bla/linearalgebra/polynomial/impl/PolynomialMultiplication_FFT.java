@@ -1,15 +1,19 @@
 package bla.linearalgebra.polynomial.impl;
 
+import java.util.List;
+
 import bla.linearalgebra.IOperation;
 import bla.linearalgebra.IRing;
+import bla.linearalgebra.algorithm.fft.FFT;
 import bla.linearalgebra.polynomial.IPolynomialFunction;
+import bla.linearalgebra.polynomial.PolynomialUtil;
 import bla.linearalgebra.polynomial.monomial.impl.MonomialFunction;
 
 public class PolynomialMultiplication_FFT<T> implements IOperation<IPolynomialFunction<T>> {
 	protected final IPolynomialFunction<T> neutralElement;
 
-	public PolynomialMultiplication_FFT(IPolynomialFunction<T> neutralElement) {
-		this.neutralElement = neutralElement;
+	public PolynomialMultiplication_FFT(IRing<T> coeffRing) {
+		this.neutralElement = new MonomialFunction<T>(coeffRing, coeffRing.one(), 0);
 	}
 
 	@Override
@@ -20,32 +24,40 @@ public class PolynomialMultiplication_FFT<T> implements IOperation<IPolynomialFu
 			throw new RuntimeException("Incompatible CoeffRings");
 		}
 
-		NaivePolynomialFunction<T> output = new NaivePolynomialFunction<T>(ring);
-		
-
-//		a = algo.fft(ring, a, omega);
-		// Calcul de la FFT inverse
-//		System.out.println(toString(ring, a));
-//		a = algo.fft(ring, a, omegainv);
-
 		int maxPower = left.getMaxPower() + right.getMaxPower();
 
-		// TODO: consider only the relevant coeffs
+		T omega = ring.findNthPrimitiveRootOfUnity(maxPower);
+		if (omega == null) {
+			throw new RuntimeException("Can not find a primitive nth root for " + maxPower + " in " + ring);
+		}
+
+		T omegaInv = ring.inv(omega);
+		if (omegaInv == null) {
+			throw new RuntimeException("Can not find the inverse of the primitive nth root " + omega);
+		}
+
+		List<T> a = PolynomialUtil.toList(left);
+		while (a.size() <= maxPower) {
+			a.add(ring.zero());
+		}
+		List<T> b = PolynomialUtil.toList(right);
+		while (b.size() <= maxPower) {
+			b.add(ring.zero());
+		}
+
+		a = new FFT().fft(ring, a, omega);
+		b = new FFT().fft(ring, b, omega);
+
 		for (int i = 0; i <= maxPower; i++) {
-			T coeff = ring.zero();
+			a.set(i, ring.add(a.get(i), b.get(i)));
+		}
 
-			for (int j = 0; j <= i; j++) {
-				T leftCoeff = left.getCoedd(j);
-				T rightCoeff = right.getCoedd(i - j);
+		// Calcul de la FFT inverse
+		a = new FFT().fft(ring, a, omegaInv);
 
-				if (leftCoeff != null && rightCoeff != null)
-					coeff = ring.add(coeff, ring.mul(leftCoeff, rightCoeff));
-				else {
-					// do nothing
-				}
-			}
-
-			output.setCoeff(i, coeff);
+		NaivePolynomialFunction<T> output = new NaivePolynomialFunction<T>(ring);
+		for (int i = 0; i <= maxPower; i++) {
+			output.setCoeff(i, a.get(i));
 		}
 
 		return output;

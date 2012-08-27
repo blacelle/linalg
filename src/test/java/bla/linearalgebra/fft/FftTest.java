@@ -1,5 +1,8 @@
 package bla.linearalgebra.fft;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import bla.linearalgebra.IRing;
 import bla.linearalgebra.algorithm.fft.FFT;
 import bla.linearalgebra.algorithm.fft.FftAlgorithm;
@@ -31,9 +34,9 @@ public class FftTest {
 	/**
 	 * Multiplication de chacun des éléments d'un tableau par un scalaire
 	 */
-	public static <T> void scalMult(IRing<T> ring, T[] a, T scal) {
-		for (int i = 0; i < a.length; i++)
-			a[i] = ring.mul(a[i], scal);
+	public static <T> void scalMult(IRing<T> ring, List<T> a, T scal) {
+		for (int i = 0; i < a.size(); i++)
+			a.set(i, ring.mul(a.get(i), scal));
 	}
 
 	public static void main(String[] args) {
@@ -62,38 +65,38 @@ public class FftTest {
 
 		// Essais avec les éléments de la base : 1, x, x^2, ..., x^{n-1}
 		for (i = 0; i < n; i++) {
-			T[] a = (T[]) new Object[n];
+			List<T> a = new ArrayList<T>();
 			// x^i
 			for (j = 0; j < n; j++)
-				a[j] = ring.makeFromInt(i == j ? 1 : 0);
+				a.add(ring.makeFromInt(i == j ? 1 : 0));
 			System.out.println("P = x^" + i);
-			System.out.println(toString(ring, a));
+			// System.out.println(toString(ring, a));
 			a = algo.fft(ring, a, omega);
-			System.out.println(toString(ring, a));
+			// System.out.println(toString(ring, a));
 			// Calcul de la FFT inverse
 			a = algo.fft(ring, a, omegainv);
 			scalMult(ring, a, ninv); // Normalisation
-			System.out.println(toString(ring, a));
+			// System.out.println(toString(ring, a));
 		}
 		{
-			T[] a = (T[]) new Object[n];
+			List<T> a = new ArrayList<T>();
 
 			// Exemple du poly
-			a[0] = ring.makeFromInt(255);
-			a[1] = ring.makeFromInt(8);
-			a[2] = ring.makeFromInt(0);
-			a[3] = ring.makeFromInt(226);
-			a[4] = ring.makeFromInt(37);
-			a[5] = ring.makeFromInt(240);
-			a[6] = ring.makeFromInt(3);
-			a[7] = ring.makeFromInt(0);
-			System.out.println(toString(ring, a));
+			a.add(ring.makeFromInt(255));
+			a.add(ring.makeFromInt(8));
+			a.add(ring.makeFromInt(0));
+			a.add(ring.makeFromInt(226));
+			a.add(ring.makeFromInt(37));
+			a.add(ring.makeFromInt(240));
+			a.add(ring.makeFromInt(3));
+			a.add(ring.makeFromInt(0));
+			// System.out.println(toString(ring, a));
 			a = algo.fft(ring, a, omega);
 			// Calcul de la FFT inverse
-			System.out.println(toString(ring, a));
+			// System.out.println(toString(ring, a));
 			a = algo.fft(ring, a, omegainv);
 			scalMult(ring, a, ninv); // Normalisation
-			System.out.println(toString(ring, a));
+			// System.out.println(toString(ring, a));
 		}
 	}
 }

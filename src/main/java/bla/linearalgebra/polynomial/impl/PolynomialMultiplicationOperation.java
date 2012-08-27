@@ -8,8 +8,8 @@ import bla.linearalgebra.polynomial.monomial.impl.MonomialFunction;
 public class PolynomialMultiplicationOperation<T> implements IOperation<IPolynomialFunction<T>> {
 	protected final IPolynomialFunction<T> neutralElement;
 
-	public PolynomialMultiplicationOperation(IPolynomialFunction<T> neutralElement) {
-		this.neutralElement = neutralElement;
+	public PolynomialMultiplicationOperation(IRing<T> coeffRing) {
+		this.neutralElement = new MonomialFunction<T>(coeffRing, coeffRing.one(), 0);
 	}
 
 	@Override

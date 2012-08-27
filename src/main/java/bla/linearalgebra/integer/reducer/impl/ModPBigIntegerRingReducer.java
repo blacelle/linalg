@@ -2,6 +2,7 @@ package bla.linearalgebra.integer.reducer.impl;
 
 import java.math.BigInteger;
 
+import bla.linearalgebra.IRing;
 import bla.linearalgebra.IRingReducer;
 
 public class ModPBigIntegerRingReducer implements IRingReducer<BigInteger> {
@@ -56,6 +57,11 @@ public class ModPBigIntegerRingReducer implements IRingReducer<BigInteger> {
 	@Override
 	public String toString() {
 		return "ModPIntegerRingReducer [modp=" + modp + "]";
+	}
+
+	@Override
+	public BigInteger findNthPrimitiveRootOfUnity(IRing<BigInteger> ring, int n) {
+		return null;
 	}
 
 }

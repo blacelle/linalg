@@ -100,4 +100,9 @@ public class IntegerModPRing<T> implements IReducedRing<T> {
 		return reducer.reduce(underlyingRing.makeFromInt(i));
 	}
 
+	@Override
+	public T findNthPrimitiveRootOfUnity(int n) {
+		return reducer.findNthPrimitiveRootOfUnity(underlyingRing, n);
+	}
+
 }
