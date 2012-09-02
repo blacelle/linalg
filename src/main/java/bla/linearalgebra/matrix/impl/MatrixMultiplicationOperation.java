@@ -14,14 +14,15 @@ public class MatrixMultiplicationOperation<T> implements IOperation<IMatrix<T>> 
 	@Override
 	public IMatrix<T> add(final IMatrix<T> left, final IMatrix<T> right) {
 		if (left.nbColumns() != right.nbRows()) {
-			throw new RuntimeException("Incompatible sizes");
+			throw new RuntimeException("Incompatible sizes: (" + left.nbRows() + "," + left.nbColumns() + ")+(" + right.nbRows() + "," + right.nbColumns()
+					+ ")");
 		}
 
 		if (!left.getCoeffRing().equals(right.getCoeffRing())) {
 			throw new RuntimeException("Incompatible coeff rings");
 		}
 
-		final IMatrix<T> output = new DenseMatrix<T>(left.getCoeffRing(), left.nbRows(), left.nbColumns());
+		final IMatrix<T> output = new DenseMatrix<T>(left.getCoeffRing(), left.nbRows(), right.nbColumns());
 
 		final int nbSum = left.nbColumns();
 

@@ -1,5 +1,6 @@
 package bla.linearalgebra.impl;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -53,8 +54,7 @@ public class RingUtil {
 
 		// Worst case: we test all values
 		while (!ring.zero().equals(testedValue)) {
-			
-			
+
 			if (!ring.one().equals(power(ring, testedValue, n - 1)) && ring.one().equals(power(ring, testedValue, n))) {
 				break;
 			} else {
@@ -65,5 +65,15 @@ public class RingUtil {
 		}
 
 		return testedValue;
+	}
+
+	public static <T> List<T> convertToRingElement(IRing<T> ring, int[] listOfIntegers) {
+		List<T> output = new ArrayList<T>();
+
+		for (int i : listOfIntegers) {
+			output.add(ring.makeFromInt(i));
+		}
+
+		return output;
 	}
 }

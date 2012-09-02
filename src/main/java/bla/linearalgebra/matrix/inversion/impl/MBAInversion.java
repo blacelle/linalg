@@ -8,6 +8,10 @@ import bla.linearalgebra.matrix.structured.impl.DiagonalMatrix;
 
 public class MBAInversion {
 	public static int getSize(IMatrix<?> iA) {
+		if (iA == null) {
+			return 0;
+		}
+
 		int nbCols = iA.nbColumns();
 
 		if (nbCols != iA.nbRows()) {
@@ -26,7 +30,14 @@ public class MBAInversion {
 		if (getSize(iA) != 1) {
 			throw new RuntimeException("Expected a matrix of size 1");
 		}
-		return new DiagonalMatrix<T>(iA.getCoeffRing(), 1, 1, iA.getValue(0, 0));
+
+		T inverse = iA.getCoeffRing().inv(iA.getValue(0, 0));
+
+		if (inverse == null) {
+			return null;
+		}
+
+		return new DiagonalMatrix<T>(iA.getCoeffRing(), 1, 1, inverse);
 	}
 
 	public static <T> IMatrix<T> doInverse(IRing<IMatrix<T>> matrixRing, IMatrix<T> iA) {
@@ -56,7 +67,7 @@ public class MBAInversion {
 		// -----------------------------------
 		// Step2: compute the Schur complement
 		// -----------------------------------
-		IMatrix<T> A21Minus = matrixRing.mul(matrixRing.makeFromInt(-1), new SubMatrix<T>(iA.getCoeffRing(), iA, sizeA11, sizeA, 0, sizeA11));
+		IMatrix<T> A21Minus = matrixRing.neg(new SubMatrix<T>(iA.getCoeffRing(), iA, sizeA11, sizeA, 0, sizeA11));
 		//
 		IMatrix<T> MinusA21A11Inv = matrixRing.mul(A21Minus, A11Inv);
 		//
@@ -74,7 +85,7 @@ public class MBAInversion {
 		IMatrix<T> A12 = new SubMatrix<T>(iA.getCoeffRing(), iA, 0, sizeA11, sizeA11, sizeA);
 		IMatrix<T> MinusA21A11A12 = matrixRing.mul(MinusA21A11Inv, A12);
 
-		IMatrix<T> Delta = new SubMatrix<T>(iA.getCoeffRing(), iA, sizeA11, sizeA11, sizeA, sizeA);
+		IMatrix<T> Delta = new SubMatrix<T>(iA.getCoeffRing(), iA, sizeA11, sizeA, sizeA11, sizeA);
 		Delta = matrixRing.add(Delta, MinusA21A11A12);
 		//
 		// //The displacement rank of Delta is at most the one of A
@@ -124,7 +135,7 @@ public class MBAInversion {
 		// Reduction (B12, iA.length()+1);
 		// }
 
-		B12 = matrixRing.mul(matrixRing.makeFromInt(-1), B12);
+		B12 = matrixRing.neg(B12);
 
 		IMatrix<T> B21 = matrixRing.mul(DeltaInv, MinusA21rrA11Inv);
 		IMatrix<T> B11 = matrixRing.add(matrixRing.mul(B12, MinusA21rrA11Inv), A11Inv);

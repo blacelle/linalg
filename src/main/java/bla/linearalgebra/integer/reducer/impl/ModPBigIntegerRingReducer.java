@@ -61,7 +61,24 @@ public class ModPBigIntegerRingReducer implements IRingReducer<BigInteger> {
 
 	@Override
 	public BigInteger findNthPrimitiveRootOfUnity(IRing<BigInteger> ring, int n) {
-		return null;
-	}
+		// int twoPower_e_by_k = modp -1;
+		//
+		// int e = 0;
+		// while (twoPower_e_by_k%2 == 0) {
+		// e++;
+		// twoPower_e_by_k = twoPower_e_by_k / 2;
+		// }
 
+		// modp = 2^e*k
+		// BigInteger e
+
+		if (modp.equals(BigInteger.valueOf(2013265921L))) {
+			// e == 27, a==31
+			return BigInteger.valueOf(31).modPow(BigInteger.valueOf(2).pow(27 - n).multiply(BigInteger.valueOf(15)), modp);
+		} else if (modp.equals(BigInteger.valueOf(7L))) {
+			return BigInteger.valueOf(3);
+		} else {
+			return null;
+		}
+	}
 }

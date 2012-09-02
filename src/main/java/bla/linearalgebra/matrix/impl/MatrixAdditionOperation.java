@@ -15,7 +15,8 @@ public class MatrixAdditionOperation<T> extends AInversableOperation<IMatrix<T>>
 	@Override
 	public IMatrix<T> add(final IMatrix<T> left, final IMatrix<T> right) {
 		if (left.nbRows() != right.nbRows() || left.nbColumns() != right.nbColumns()) {
-			throw new RuntimeException("Incompatible sizes");
+			throw new RuntimeException("Incompatible sizes: (" + left.nbRows() + "," + left.nbColumns() + ")+(" + right.nbRows() + "," + right.nbColumns()
+					+ ")");
 		}
 
 		if (!left.getCoeffRing().equals(right.getCoeffRing())) {

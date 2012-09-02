@@ -99,4 +99,20 @@ public abstract class AMatrix<T> implements IMatrix<T> {
 		return resultAsArray[0];
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+
+		for (int i = 0; i < nbRows(); i++) {
+			sb.append(i);
+			sb.append(": ");
+			for (int j = 0; j < nbColumns(); j++) {
+				sb.append(getValue(i, j));
+				sb.append(" ");
+			}
+			sb.append('\n');
+		}
+
+		return sb.toString();
+	}
 }

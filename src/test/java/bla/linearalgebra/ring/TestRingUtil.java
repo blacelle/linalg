@@ -1,5 +1,6 @@
 package bla.linearalgebra.ring;
 
+import java.math.BigInteger;
 import java.util.Arrays;
 import java.util.List;
 
@@ -9,10 +10,10 @@ import org.junit.Test;
 
 import bla.linearalgebra.IRing;
 import bla.linearalgebra.impl.RingUtil;
-import bla.linearalgebra.integer.TestIntegerRing;
+import bla.linearalgebra.integer.TestBigIntegerRing;
 
 public class TestRingUtil {
-	protected TestIntegerRing parentTestClass = new TestIntegerRing();
+	protected TestBigIntegerRing parentTestClass = new TestBigIntegerRing();
 
 	@Test
 	public void testPower() {
@@ -22,9 +23,9 @@ public class TestRingUtil {
 
 	@Test
 	public void testXGCD() {
-		IRing<Integer> ring = parentTestClass.makeRing();
+		IRing<BigInteger> ring = parentTestClass.makeRing();
 
-		List<Integer> output = RingUtil.XGCD(ring, ring.makeFromInt(13), ring.makeFromInt(7));
+		List<BigInteger> output = RingUtil.XGCD(ring, ring.makeFromInt(13), ring.makeFromInt(7));
 
 		Assert.assertEquals(Arrays.asList(-1, 2, 1), output);
 

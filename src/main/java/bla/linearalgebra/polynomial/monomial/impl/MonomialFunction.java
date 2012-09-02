@@ -21,6 +21,10 @@ public class MonomialFunction<T> extends APolynomialFunction<T> implements IMono
 		this.power = power;
 	}
 
+	public MonomialFunction(IRing<T> coeffRing, int coeff, int power) {
+		this(coeffRing, coeffRing.makeFromInt(coeff), power);
+	}
+
 	@Override
 	public T evaluate(T element) {
 		// 1

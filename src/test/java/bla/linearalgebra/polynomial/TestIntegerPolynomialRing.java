@@ -1,18 +1,20 @@
 package bla.linearalgebra.polynomial;
 
+import java.math.BigInteger;
+
 import bla.linearalgebra.IRing;
-import bla.linearalgebra.integer.impl.IntegerRing;
+import bla.linearalgebra.integer.big.impl.BigIntegerRing;
 import bla.linearalgebra.polynomial.impl.PolynomialRing;
 
-public class TestIntegerPolynomialRing extends ATestIntegerPolynomialRing<Integer> {
+public class TestIntegerPolynomialRing extends ATestIntegerPolynomialRing<BigInteger> {
 
 	@Override
-	public IRing<IPolynomialFunction<Integer>> makeRing() {
-		return new PolynomialRing<Integer>(makeCoeffRing());
+	public IRing<IPolynomialFunction<BigInteger>> makeRing() {
+		return new PolynomialRing<BigInteger>(makeCoeffRing());
 	}
 
 	@Override
-	public IRing<Integer> makeCoeffRing() {
-		return new IntegerRing();
+	public IRing<BigInteger> makeCoeffRing() {
+		return new BigIntegerRing();
 	}
 }

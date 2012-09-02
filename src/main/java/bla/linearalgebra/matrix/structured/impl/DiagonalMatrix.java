@@ -11,12 +11,20 @@ public class DiagonalMatrix<T> extends AToeplitzMatrix<T> implements IDiagonalMa
 		super(coeffRing, nbRows, nbColumns);
 
 		this.valueOnDiagonal = valueOnDiagonal;
+
+		if (this.valueOnDiagonal == null) {
+			throw new RuntimeException("Diagonal can nopt be null");
+		}
 	}
 
 	public DiagonalMatrix(IRing<T> coeffRing, T valueOnDiagonal) {
 		super(coeffRing);
 
 		this.valueOnDiagonal = valueOnDiagonal;
+
+		if (this.valueOnDiagonal == null) {
+			throw new RuntimeException("Diagonal can nopt be null");
+		}
 	}
 
 	@Override

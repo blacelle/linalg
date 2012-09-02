@@ -1,14 +1,15 @@
 package bla.linearalgebra.fft;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
 import bla.linearalgebra.IRing;
 import bla.linearalgebra.algorithm.fft.FFT;
 import bla.linearalgebra.algorithm.fft.FftAlgorithm;
+import bla.linearalgebra.integer.big.impl.BigIntegerRing;
 import bla.linearalgebra.integer.impl.IntegerModPRing;
-import bla.linearalgebra.integer.impl.IntegerRing;
-import bla.linearalgebra.integer.reducer.impl.ModPIntegerRingReducer;
+import bla.linearalgebra.integer.reducer.impl.ModPBigIntegerRingReducer;
 
 /**
  * Test de l'Algorithme de FFT
@@ -40,7 +41,7 @@ public class FftTest {
 	}
 
 	public static void main(String[] args) {
-		main2(new IntegerModPRing<Integer>(new IntegerRing(), new ModPIntegerRingReducer(257)));
+		main2(new IntegerModPRing<BigInteger>(new BigIntegerRing(257), new ModPBigIntegerRingReducer(257)));
 	}
 
 	public static <T> void main2(IRing<T> ring) {

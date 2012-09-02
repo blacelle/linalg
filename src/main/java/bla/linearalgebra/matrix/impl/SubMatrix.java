@@ -28,12 +28,12 @@ public class SubMatrix<T> extends AProxyMatrix<T> {
 
 	@Override
 	public T getValue(int rowIndex, int columnIndex) {
-		return getParent().getValue(rowIndex - firstIncludedRowIndex, columnIndex - firstIncludedColumnIndex);
+		return getParent().getValue(rowIndex + firstIncludedRowIndex, columnIndex + firstIncludedColumnIndex);
 	}
 
 	@Override
 	public void setValue(int rowIndex, int columnIndex, T value) {
-		getParent().setValue(rowIndex - firstIncludedRowIndex, columnIndex - firstIncludedColumnIndex, value);
+		getParent().setValue(rowIndex + firstIncludedRowIndex, columnIndex + firstIncludedColumnIndex, value);
 	}
 
 }
