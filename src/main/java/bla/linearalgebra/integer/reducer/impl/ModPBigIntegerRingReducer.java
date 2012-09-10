@@ -16,6 +16,10 @@ public class ModPBigIntegerRingReducer implements IRingReducer<BigInteger> {
 		this(BigInteger.valueOf(i));
 	}
 
+	public ModPBigIntegerRingReducer(long i) {
+		this(BigInteger.valueOf(i));
+	}
+
 	public BigInteger getModP() {
 		return modp;
 	}

@@ -1,33 +1,27 @@
 package bla.linearalgebra.matrix.inversion.impl;
 
+import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ForkJoinTask;
+import java.util.concurrent.RecursiveTask;
+
 import bla.linearalgebra.IRing;
 import bla.linearalgebra.matrix.IMatrix;
+import bla.linearalgebra.matrix.MatrixSquareUtil;
 import bla.linearalgebra.matrix.impl.FourSquareMatrix;
 import bla.linearalgebra.matrix.impl.SubMatrix;
 import bla.linearalgebra.matrix.structured.impl.DiagonalMatrix;
 
-public class MBAInversion {
-	public static int getSize(IMatrix<?> iA) {
-		if (iA == null) {
-			return 0;
-		}
-
-		int nbCols = iA.nbColumns();
-
-		if (nbCols != iA.nbRows()) {
-			throw new RuntimeException("Not Square");
-		}
-
-		return nbCols;
-	}
+public class MBAInversion<T> implements IMatrixInvertion<T> {
+	protected int problemSize = -1;
+	protected int problemDone = -1;
 
 	public static int getTopLeftSize(int fullSize) {
-		// TODO return the highest power of 2, strictly loiwer than fullSize
+		// TODO return the highest power of 2, strictly lower than fullSize
 		return fullSize / 2;
 	}
 
 	public static final <T> IMatrix<T> doInverseSize1Matrix(IMatrix<T> iA) {
-		if (getSize(iA) != 1) {
+		if (MatrixSquareUtil.getSize(iA) != 1) {
 			throw new RuntimeException("Expected a matrix of size 1");
 		}
 
@@ -40,8 +34,14 @@ public class MBAInversion {
 		return new DiagonalMatrix<T>(iA.getCoeffRing(), 1, 1, inverse);
 	}
 
-	public static <T> IMatrix<T> doInverse(IRing<IMatrix<T>> matrixRing, IMatrix<T> iA) {
-		int sizeA = getSize(iA);
+	public IMatrix<T> doInverse(final IRing<IMatrix<T>> matrixRing, IMatrix<T> iA) {
+
+		int sizeA = MatrixSquareUtil.getSize(iA);
+
+		if (problemSize < 0) {
+			problemSize = sizeA;
+			problemDone = 0;
+		}
 
 		if (sizeA == 1) {
 			return doInverseSize1Matrix(iA);
@@ -51,14 +51,39 @@ public class MBAInversion {
 		int sizeA11 = getTopLeftSize(sizeA);
 
 		// Extract A11
-		IMatrix<T> A11 = new SubMatrix<T>(iA.getCoeffRing(), iA, 0, sizeA11, 0, sizeA11);
+		final IMatrix<T> A11 = new SubMatrix<T>(iA, 0, sizeA11, 0, sizeA11);
 
 		// ----------------------------------
 		// STEP 1: inverse recursively on A11
 		// ----------------------------------
-		IMatrix<T> A11Inv = doInverse(matrixRing, A11);
 
-		if (getSize(A11Inv) < sizeA11) {
+		RecursiveTask<IMatrix<T>> A11InvTask = new RecursiveTask<IMatrix<T>>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected IMatrix<T> compute() {
+				return doInverse(matrixRing, A11);
+			}
+		};
+
+		A11InvTask.fork();
+
+		final IMatrix<T> A11Inv = A11InvTask.join();
+
+//		if (problemDone < sizeA11) {
+//			int currentSize = problemSize;
+//
+//			for (int i = 0; i < 16; i++) {
+//				currentSize = getTopLeftSize(currentSize);
+//
+//				if (sizeA11 == currentSize) {
+//					problemDone = sizeA11 / 3;
+//					System.out.println((100D * problemDone) / problemSize);
+//				}
+//			}
+//		}
+
+		if (MatrixSquareUtil.getSize(A11Inv) < sizeA11) {
 			// A11 is singular, we return the inverse of the biggest up-left
 			// inversible submatrix
 			return A11Inv;
@@ -67,7 +92,7 @@ public class MBAInversion {
 		// -----------------------------------
 		// Step2: compute the Schur complement
 		// -----------------------------------
-		IMatrix<T> A21Minus = matrixRing.neg(new SubMatrix<T>(iA.getCoeffRing(), iA, sizeA11, sizeA, 0, sizeA11));
+		IMatrix<T> A21Minus = matrixRing.neg(new SubMatrix<T>(iA, sizeA11, sizeA, 0, sizeA11));
 		//
 		IMatrix<T> MinusA21A11Inv = matrixRing.mul(A21Minus, A11Inv);
 		//
@@ -82,10 +107,10 @@ public class MBAInversion {
 		//
 		// MinusA21A11Inv.negate();
 
-		IMatrix<T> A12 = new SubMatrix<T>(iA.getCoeffRing(), iA, 0, sizeA11, sizeA11, sizeA);
+		IMatrix<T> A12 = new SubMatrix<T>(iA, 0, sizeA11, sizeA11, sizeA);
 		IMatrix<T> MinusA21A11A12 = matrixRing.mul(MinusA21A11Inv, A12);
 
-		IMatrix<T> Delta = new SubMatrix<T>(iA.getCoeffRing(), iA, sizeA11, sizeA, sizeA11, sizeA);
+		IMatrix<T> Delta = new SubMatrix<T>(iA, sizeA11, sizeA, sizeA11, sizeA);
 		Delta = matrixRing.add(Delta, MinusA21A11A12);
 		//
 		// //The displacement rank of Delta is at most the one of A
@@ -95,9 +120,22 @@ public class MBAInversion {
 		// -----------------------------------------------
 		// Step3: call recursively on the Schur complement
 		// -----------------------------------------------
-		IMatrix<T> DeltaInv = doInverse(matrixRing, Delta);
+		final IMatrix<T> DeltaInv = doInverse(matrixRing, Delta);
 
-		int sizeDeltaInv = getSize(DeltaInv);
+//		if (problemDone < sizeA11) {
+//			int currentSize = problemSize;
+//
+//			for (int i = 0; i < 16; i++) {
+//				currentSize = getTopLeftSize(currentSize);
+//
+//				if (sizeA11 == currentSize) {
+//					problemDone = (2 * sizeA11) / 3;
+//					System.out.println((100D * problemDone) / problemSize);
+//				}
+//			}
+//		}
+
+		int sizeDeltaInv = MatrixSquareUtil.getSize(DeltaInv);
 
 		if (sizeDeltaInv == 0) {
 			// A11 is the biggest up-left inversible submatrix
@@ -109,11 +147,11 @@ public class MBAInversion {
 		// ---------------------------------
 		int sizeAr = sizeA11 + sizeDeltaInv;
 		//
-		IMatrix<T> MinusA21rrA11Inv;
-		IMatrix<T> A12rr;
+		final IMatrix<T> MinusA21rrA11Inv;
+		final IMatrix<T> A12rr;
 		//
 		if (sizeAr < sizeA) {
-			MinusA21rrA11Inv = new SubMatrix<T>(iA.getCoeffRing(), MinusA21A11Inv, 0, sizeDeltaInv, 0, sizeA11);
+			MinusA21rrA11Inv = new SubMatrix<T>(MinusA21A11Inv, 0, sizeDeltaInv, 0, sizeA11);
 
 			// if (SLA_SUPPLEMENTARY_REDUCTIONS)
 			// {
@@ -121,13 +159,35 @@ public class MBAInversion {
 			// Reduction (MinusA21rrA11Inv);
 			// }
 
-			A12rr = new SubMatrix<T>(iA.getCoeffRing(), A12, 0, sizeA11, 0, sizeDeltaInv);
+			A12rr = new SubMatrix<T>(A12, 0, sizeA11, 0, sizeDeltaInv);
 		} else {
 			MinusA21rrA11Inv = MinusA21A11Inv;
 			A12rr = A12;
 		}
 
-		IMatrix<T> B12 = matrixRing.mul(matrixRing.mul(A11Inv, A12rr), DeltaInv);
+		RecursiveTask<IMatrix<T>> A11InvA12rrTask = new RecursiveTask<IMatrix<T>>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected IMatrix<T> compute() {
+				return matrixRing.mul(A11Inv, A12rr);
+			}
+		};
+//		A11InvA12rrTask.fork();
+
+		RecursiveTask<IMatrix<T>> DeltaInvMinusA21rrA11InvTask = new RecursiveTask<IMatrix<T>>() {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+			protected IMatrix<T> compute() {
+				return matrixRing.mul(DeltaInv, MinusA21rrA11Inv);
+			}
+		};
+//		DeltaInvMinusA21rrA11InvTask.fork();
+		
+		ForkJoinTask.invokeAll(A11InvA12rrTask, DeltaInvMinusA21rrA11InvTask);
+
+		IMatrix<T> B12 = matrixRing.mul(A11InvA12rrTask.join(), DeltaInv);
 
 		// if (SLA_SUPPLEMENTARY_REDUCTIONS)
 		// {
@@ -137,7 +197,7 @@ public class MBAInversion {
 
 		B12 = matrixRing.neg(B12);
 
-		IMatrix<T> B21 = matrixRing.mul(DeltaInv, MinusA21rrA11Inv);
+		IMatrix<T> B21 = DeltaInvMinusA21rrA11InvTask.join();
 		IMatrix<T> B11 = matrixRing.add(matrixRing.mul(B12, MinusA21rrA11Inv), A11Inv);
 
 		// if (!SLA_LESS_MULTIPLICATIONS)

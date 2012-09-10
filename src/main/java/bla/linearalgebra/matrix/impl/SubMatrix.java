@@ -1,6 +1,5 @@
 package bla.linearalgebra.matrix.impl;
 
-import bla.linearalgebra.IRing;
 import bla.linearalgebra.matrix.IMatrix;
 
 public class SubMatrix<T> extends AProxyMatrix<T> {
@@ -18,9 +17,8 @@ public class SubMatrix<T> extends AProxyMatrix<T> {
 	 * @param lastExcludedColumnIndex
 	 *            if equals to firstIncludedColumnIndex, nbColumns will be 0
 	 */
-	public SubMatrix(IRing<T> coeffRing, IMatrix<T> parent, int firstIncludedRowIndex, int lastExcludedRowIndex, int firstIncludedColumnIndex,
-			int lastExcludedColumnIndex) {
-		super(coeffRing, parent, lastExcludedRowIndex - firstIncludedRowIndex, lastExcludedColumnIndex - firstIncludedColumnIndex);
+	public SubMatrix(IMatrix<T> parent, int firstIncludedRowIndex, int lastExcludedRowIndex, int firstIncludedColumnIndex, int lastExcludedColumnIndex) {
+		super(parent, lastExcludedRowIndex - firstIncludedRowIndex, lastExcludedColumnIndex - firstIncludedColumnIndex);
 
 		this.firstIncludedRowIndex = firstIncludedRowIndex;
 		this.firstIncludedColumnIndex = firstIncludedColumnIndex;

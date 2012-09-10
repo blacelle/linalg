@@ -103,6 +103,11 @@ public class GenericRing<T> implements IRing<T> {
 		return null;
 	}
 
+	@Override
+	public boolean equals(T left, T right) {
+		return add(left, neg(right)).equals(zero());
+	}
+
 	// @Override
 	// public T mulByFactor(T element, int factor) {
 	// if (element instanceof Integer) {

@@ -8,7 +8,7 @@ import bla.linearalgebra.IRing;
 import bla.linearalgebra.algorithm.fft.FFT;
 import bla.linearalgebra.algorithm.fft.FftAlgorithm;
 import bla.linearalgebra.integer.big.impl.BigIntegerRing;
-import bla.linearalgebra.integer.impl.IntegerModPRing;
+import bla.linearalgebra.integer.impl.GenericReducedRing;
 import bla.linearalgebra.integer.reducer.impl.ModPBigIntegerRingReducer;
 
 /**
@@ -41,7 +41,7 @@ public class FftTest {
 	}
 
 	public static void main(String[] args) {
-		main2(new IntegerModPRing<BigInteger>(new BigIntegerRing(257), new ModPBigIntegerRingReducer(257)));
+		main2(new GenericReducedRing<BigInteger>(new BigIntegerRing(257), new ModPBigIntegerRingReducer(257)));
 	}
 
 	public static <T> void main2(IRing<T> ring) {

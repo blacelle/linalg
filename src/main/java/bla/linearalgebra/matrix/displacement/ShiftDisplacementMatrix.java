@@ -1,6 +1,5 @@
 package bla.linearalgebra.matrix.displacement;
 
-import bla.linearalgebra.IRing;
 import bla.linearalgebra.matrix.IMatrix;
 import bla.linearalgebra.matrix.impl.AProxyMatrix;
 
@@ -17,8 +16,8 @@ public class ShiftDisplacementMatrix<T> extends AProxyMatrix<T> {
 	 *            if positive, this will be shifted to the bottom. The first
 	 *            rows will be filled with zeros
 	 */
-	public ShiftDisplacementMatrix(IRing<T> coeffRing, IMatrix<T> parent, int rowDisplacement, int columnDisplacement) {
-		super(coeffRing, parent);
+	public ShiftDisplacementMatrix(IMatrix<T> parent, int rowDisplacement, int columnDisplacement) {
+		super(parent);
 
 		this.rowDisplacement = rowDisplacement;
 		this.columnDisplacement = columnDisplacement;

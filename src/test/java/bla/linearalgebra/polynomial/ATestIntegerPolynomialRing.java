@@ -33,7 +33,6 @@ public abstract class ATestIntegerPolynomialRing<T> extends ATestRing<IPolynomia
 		Assert.assertEquals(PolynomialUtil.fromString(makeRing(), "15.5+58.9+55.13"), makeRing().mul(left, right));
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Iterable<IPolynomialFunction<T>> getIteratable() {
 		IPolynomialFunction<T> first = new MonomialFunction<T>(makeCoeffRing(), makeCoeffRing().makeFromInt(3), 2);

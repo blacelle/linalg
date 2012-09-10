@@ -14,8 +14,10 @@ public interface IMatrix<T> {
 	/**
 	 * The {@link IMatrixVisitor} will be evaluated on each non-zero cell of
 	 * this
+	 * 
+	 * @return true if the visitor always returned true. Else false
 	 */
-	void accept(IMatrixVisitor iMatrixVisitor);
+	boolean accept(IMatrixVisitor iMatrixVisitor);
 
 	IRing<T> getCoeffRing();
 }

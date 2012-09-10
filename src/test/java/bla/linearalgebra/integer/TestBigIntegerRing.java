@@ -26,11 +26,11 @@ public class TestBigIntegerRing extends ATestRing<BigInteger> {
 
 	@Test
 	public void testZeroValue() {
-		Assert.assertEquals((Integer) 0, makeRing().zero());
+		Assert.assertEquals(BigInteger.ZERO, makeRing().zero());
 	}
 
 	@Test
 	public void testOneValue() {
-		Assert.assertEquals((Integer) 1, makeRing().one());
+		Assert.assertEquals(BigInteger.ONE, makeRing().one());
 	}
 }

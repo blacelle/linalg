@@ -27,7 +27,7 @@ public class TestRingUtil {
 
 		List<BigInteger> output = RingUtil.XGCD(ring, ring.makeFromInt(13), ring.makeFromInt(7));
 
-		Assert.assertEquals(Arrays.asList(-1, 2, 1), output);
+		Assert.assertEquals(Arrays.asList(BigInteger.valueOf(-1), BigInteger.valueOf(2), BigInteger.valueOf(1)), output);
 
 		Assert.assertEquals(ring.makeFromInt(4), RingUtil.XGCD(ring, ring.makeFromInt(4), ring.makeFromInt(16)).get(2));
 		Assert.assertEquals(ring.makeFromInt(4), RingUtil.XGCD(ring, ring.makeFromInt(16), ring.makeFromInt(4)).get(2));

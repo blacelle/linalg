@@ -37,4 +37,6 @@ public interface IRing<T> { // extends IRingElement> {
 
 	// For zz_p
 	// boolean OneIsPrime
+
+	boolean equals(T left, T right);
 }

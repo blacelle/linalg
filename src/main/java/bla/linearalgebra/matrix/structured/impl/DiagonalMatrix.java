@@ -42,9 +42,14 @@ public class DiagonalMatrix<T> extends AToeplitzMatrix<T> implements IDiagonalMa
 	}
 
 	@Override
-	public void accept(IMatrixVisitor iMatrixVisitor) {
-		for (int i = 0; i < Math.min(nbRows(), nbColumns()); i++)
-			iMatrixVisitor.visitCell(i, i);
+	public boolean accept(IMatrixVisitor iMatrixVisitor) {
+		for (int i = 0; i < Math.min(nbRows(), nbColumns()); i++) {
+			if (!iMatrixVisitor.visitCell(i, i)) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	@Override

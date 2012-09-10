@@ -4,12 +4,12 @@ import bla.linearalgebra.IReducedRing;
 import bla.linearalgebra.IRing;
 import bla.linearalgebra.IRingReducer;
 
-public class IntegerModPRing<T> implements IReducedRing<T> {
+public class GenericReducedRing<T> implements IReducedRing<T> {
 	protected IRing<T> underlyingRing;
 
 	protected IRingReducer<T> reducer;
 
-	public IntegerModPRing(IRing<T> underlyingRing, IRingReducer<T> reducer) {
+	public GenericReducedRing(IRing<T> underlyingRing, IRingReducer<T> reducer) {
 		this.underlyingRing = underlyingRing;
 		this.reducer = reducer;
 	}
@@ -76,7 +76,7 @@ public class IntegerModPRing<T> implements IReducedRing<T> {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		IntegerModPRing<?> other = (IntegerModPRing<?>) obj;
+		GenericReducedRing<?> other = (GenericReducedRing<?>) obj;
 		if (reducer == null) {
 			if (other.reducer != null)
 				return false;
@@ -103,6 +103,11 @@ public class IntegerModPRing<T> implements IReducedRing<T> {
 	@Override
 	public T findNthPrimitiveRootOfUnity(int n) {
 		return reducer.findNthPrimitiveRootOfUnity(underlyingRing, n);
+	}
+
+	@Override
+	public boolean equals(T left, T right) {
+		return sub(left, right).equals(zero());
 	}
 
 }

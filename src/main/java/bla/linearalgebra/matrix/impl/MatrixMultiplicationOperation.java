@@ -1,8 +1,8 @@
 package bla.linearalgebra.matrix.impl;
 
 import bla.linearalgebra.IOperation;
+import bla.linearalgebra.IRingReducer;
 import bla.linearalgebra.matrix.IMatrix;
-import bla.linearalgebra.matrix.IMatrixVisitor;
 
 public class MatrixMultiplicationOperation<T> implements IOperation<IMatrix<T>> {
 	protected final IMatrix<T> neutralElement;
@@ -26,14 +26,20 @@ public class MatrixMultiplicationOperation<T> implements IOperation<IMatrix<T>> 
 
 		final int nbSum = left.nbColumns();
 
-		output.accept(new IMatrixVisitor() {
+		output.accept(new IParallelMatrixVisitor() {
+			@SuppressWarnings("unchecked")
 			@Override
 			public boolean visitCell(int rowIndex, int columnIndex) {
 				T currentCellValue = left.getCoeffRing().zero();
 
-				for (int i = 0; i < nbSum; i++)
+				for (int i = 0; i < nbSum; i++) {
 					currentCellValue = left.getCoeffRing().add(currentCellValue,
 							left.getCoeffRing().mul(left.getValue(rowIndex, i), right.getValue(i, columnIndex)));
+				}
+
+				if (left.getCoeffRing() instanceof IRingReducer) {
+					currentCellValue = ((IRingReducer<T>) left.getCoeffRing()).reduce(currentCellValue);
+				}
 
 				output.setValue(rowIndex, columnIndex, currentCellValue);
 
@@ -42,6 +48,10 @@ public class MatrixMultiplicationOperation<T> implements IOperation<IMatrix<T>> 
 		});
 
 		return output;
+	}
+
+	protected T cleanBeforeWrite(T currentCellValue) {
+		return currentCellValue;
 	}
 
 	@Override
