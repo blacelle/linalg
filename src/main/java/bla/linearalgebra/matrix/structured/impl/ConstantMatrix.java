@@ -1,9 +1,10 @@
 package bla.linearalgebra.matrix.structured.impl;
 
 import bla.linearalgebra.IRing;
+import bla.linearalgebra.matrix.impl.AMatrix;
 import bla.linearalgebra.matrix.structured.IConstantMatrix;
 
-public class ConstantMatrix<T> extends AToeplitzMatrix<T> implements IConstantMatrix<T> {
+public class ConstantMatrix<T> extends AMatrix<T> implements IConstantMatrix<T> {
 
 	protected final T everywhereValue;
 

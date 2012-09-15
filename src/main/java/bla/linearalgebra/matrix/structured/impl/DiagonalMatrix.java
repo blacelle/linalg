@@ -28,17 +28,12 @@ public class DiagonalMatrix<T> extends AToeplitzMatrix<T> implements IDiagonalMa
 	}
 
 	@Override
-	public T getValue(int rowIndex, int columnIndex) {
-		if (rowIndex == columnIndex) {
+	protected T getValue(int i) {
+		if (i == 0) {
 			return valueOnDiagonal;
 		} else {
 			return getCoeffRing().zero();
 		}
-	}
-
-	@Override
-	public void setValue(int rowIndex, int columnIndex, T value) {
-		throw new RuntimeException("Can not mutate a diagonal matrix");
 	}
 
 	@Override

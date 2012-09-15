@@ -14,4 +14,16 @@ public abstract class AToeplitzMatrix<T> extends AMatrix<T> implements IToeplitz
 		super(coeffRing, -1, -1);
 	}
 
+	@Override
+	public T getValue(int rowIndex, int columnIndex) {
+		return getValue(rowIndex - columnIndex);
+	}
+
+	protected abstract T getValue(int i);
+
+	@Override
+	public void setValue(int rowIndex, int columnIndex, T value) {
+		throw new RuntimeException("Can not mutate a " + this.getClass() + " matrix");
+	}
+
 }
